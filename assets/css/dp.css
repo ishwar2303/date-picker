@@ -1,0 +1,170 @@
+.date-picker {
+    border: 0.5px solid rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    border-radius: 10px;
+    background: rgb(4 31 65);
+    width: 252px;
+    font-family: -webkit-pictograph;
+    box-shadow: 0px 0px 15px 0px rgba(26, 26, 26, 1);
+    display: none;
+    z-index: 999999999;
+    cursor: default;
+}
+.date-picker > div{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.dp-year-month-container {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 0.5px solid #747474;
+    padding-bottom: 10px;
+    margin: 3px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+.dp-week-container {
+    display: flex;
+}
+.dp-week-container > div {
+    background: linear-gradient(45deg, rgb(15 128 142), rgb(44 136 209));
+    color: rgb(205 204 204);
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin: 3px;
+}
+.dp-dates-container {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 12px;
+}
+.dp-date-box{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin: 3px;
+    color: #b8b8b8;
+}
+.dp-date-box > label {
+    width: 100%;
+    height: 100%;
+}
+.dp-date-box > input:checked ~ span {
+    background: linear-gradient(45deg, #aa194a, #8e7b41);
+    width: 100%;
+    height: 100%;
+    color: rgb(231, 231, 231);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border: 0.5px solid transparent;
+}
+.dp-date-pad-box {
+    width: 30px;
+    height: 30px;  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin: 3px;
+}
+.dp-date-box > input {
+    display: none;
+}
+.dp-dates-container > .dp-date-box:hover {
+    cursor: pointer;
+    background: rgba(142, 204, 255, 0.3);
+}
+.dp-action {
+    display: flex;
+    justify-content: space-between;
+    margin: 3px;
+    border-top: 0.5px solid #747474;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+.dp-action button {
+    padding: 4px 15px;
+    background: linear-gradient(45deg, rgb(15 128 142), rgb(44 136 209));
+    color: #dddddd;
+    border: none;
+    border-radius: 3px;
+}
+.dp-action button:hover {
+    background: #116c96;
+    cursor: pointer;
+}
+.dp-month-dropdown {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    background: rgb(13 105 119);
+    border-radius: 3px;
+    padding: 3px 0px;
+    color:#cacaca;
+    box-shadow: 0px 0px 20px 0px rgba(26, 26, 26, 1);
+}
+.dp-year-dropdown {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    background: rgb(13 105 119);
+    color:#cacaca;
+    border-radius: 3px;
+    padding: 3px 0px;
+    box-shadow: 0px 0px 20px 0px rgba(26, 26, 26, 1);
+    max-height: 200px;
+    overflow-y: auto;
+}
+.dp-month-dropdown > label, .dp-year-dropdown > label{
+    cursor: pointer;
+    width: 100px;
+}
+
+.dp-dropdown {
+    padding: 5px 15px;
+    border : 0.5px solid rgba(0, 0, 0, 0.3);   
+    border-radius: 3px;
+    background: linear-gradient(45deg, rgb(15 128 142), rgb(44 136 209));
+    color: rgb(231, 231, 231);
+    cursor: pointer;
+}
+.dp-month-dropdown > label:hover, .dp-year-dropdown > label:hover{
+    background: #e7e7e7;
+    color:#009688
+}
+.dp-month-dropdown label > input, .dp-year-dropdown label > input{
+    display: none;
+}
+.dp-month-dropdown > label > span, .dp-year-dropdown > label > span  {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.6px 0px;
+}
+.dp-month-dropdown > label > input:checked ~ span, .dp-year-dropdown > label > input:checked ~ span {
+    background:#04344b;
+    color: #dddddd;
+}
+
+.dp-rotate {
+    position: absolute;
+    margin-left: 5px;
+    font-size: 10px;
+    transform: rotate(90deg);
+}
