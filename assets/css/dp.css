@@ -7,10 +7,10 @@
     font-family: -webkit-pictograph;
     box-shadow: 0px 0px 15px 0px rgba(26, 26, 26, 1);
     display: none;
-    z-index: 999999999;
+    z-index: 200000001;
     cursor: default;
 }
-.date-picker > div{
+.date-picker > .dp-content{
     display: flex;
     flex-direction: column;
     position: relative;
@@ -115,6 +115,7 @@
     padding: 3px 0px;
     color:#cacaca;
     box-shadow: 0px 0px 20px 0px rgba(26, 26, 26, 1);
+    z-index: 200000003;
 }
 .dp-year-dropdown {
     position: absolute;
@@ -129,6 +130,7 @@
     box-shadow: 0px 0px 20px 0px rgba(26, 26, 26, 1);
     max-height: 200px;
     overflow-y: auto;
+    z-index: 200000003;
 }
 .dp-month-dropdown > label, .dp-year-dropdown > label{
     cursor: pointer;
@@ -167,4 +169,17 @@
     margin-left: 5px;
     font-size: 10px;
     transform: rotate(90deg);
+}
+
+.dp-overlay {
+    z-index: 200000002;
+    background: black;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    display: none;
 }

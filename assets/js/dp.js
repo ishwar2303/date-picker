@@ -1,4 +1,3 @@
-
 'use strict';
 const months = [
     {
@@ -59,6 +58,7 @@ var selectedDate;
 var selectedMonth;
 var selectedYear;
 var focusedElement;
+var overlay;
 
 const yearRange = {
     start : 1999,
@@ -85,8 +85,19 @@ class DatePicker {
         // create date picker structure
         let datePicker = document.createElement('div');
         datePicker.className = 'date-picker';
-        let content = document.createElement('div');
+        
+        overlay = document.createElement('div');
+        overlay.className = 'dp-overlay';
+        overlay.addEventListener('click', () => {
+            this.hideMonthDropDown();
+            this.hideYearDropDown();
+            this.hideOverlay();
+        })
 
+        datePicker.appendChild(overlay);
+
+        let content = document.createElement('div');
+        content.className = 'dp-content'
         let div, dropDown;
         div = document.createElement('div');
         div.className = 'dp-year-month-container';
@@ -94,7 +105,10 @@ class DatePicker {
         // year start
         selectYearBlock = document.createElement('div');
         selectYearBlock.className = 'dp-year-block dp-dropdown';
-        selectYearBlock.addEventListener('click', this.showYearDropDown);
+        selectYearBlock.addEventListener('click', () => {
+            this.showYearDropDown();
+            this.showOverlay();
+        });
 
         dropDown = document.createElement('div');
         dropDown.style.display = 'none';
@@ -118,6 +132,7 @@ class DatePicker {
             span.addEventListener('click', () => {
                 setTimeout(() => {
                     this.setYear();
+                    this.hideOverlay();
                     this.hideYearDropDown();
                 }, 1)
                 
@@ -131,7 +146,10 @@ class DatePicker {
         // month start
         selectMonthBlock = document.createElement('div');
         selectMonthBlock.className = 'dp-month-block dp-dropdown';
-        selectMonthBlock.addEventListener('click', this.showMonthDropDown);
+        selectMonthBlock.addEventListener('click', () => {
+            this.showMonthDropDown();
+            this.showOverlay();
+        });
 
         dropDown = document.createElement('div');
         dropDown.style.display = 'none';
@@ -155,12 +173,14 @@ class DatePicker {
             span.addEventListener('click', () => {
                 setTimeout(() => {
                     this.setMonth();
+                    this.hideOverlay();
                     this.hideMonthDropDown();
                 }, 1)
                 
             })
             dropDown.appendChild(label);
         })
+        
         div.appendChild(selectMonthBlock)
         div.appendChild(dropDown);
         // month end
@@ -181,7 +201,10 @@ class DatePicker {
         let button;
         button = document.createElement('button');
         button.innerText = 'Today'
-        button.addEventListener('click', this.today);
+        button.addEventListener('click', () => {
+            this.setToday();
+            this.pickToday();
+        });
         div.appendChild(button);
 
         button = document.createElement('button');
@@ -212,10 +235,8 @@ class DatePicker {
         let datesConatiner = document.getElementsByClassName('dp-dates-container')[0];
         datesConatiner.innerHTML = '';
         // add padding 
-        console.log(selectedMonth, selectedYear)
         let dayOne = new Date(selectedYear, selectedMonth, 1).getDay();
         let noOfDays = new Date(selectedYear, parseInt(selectedMonth)+1, 0).getDate();
-        console.log(noOfDays)
         for(let d=1; d<=dayOne; d++) {
             let dateBox = document.createElement('div');
             dateBox.className = 'dp-date-pad-box';
@@ -277,6 +298,14 @@ class DatePicker {
         this.dateBox();
     }
 
+    showOverlay() {
+        overlay.style.display = 'flex'
+    }
+
+    hideOverlay() {
+        overlay.style.display = 'none'
+    }
+
     showMonthDropDown() {
         selectMonth.style.display = 'flex'
     }
@@ -298,13 +327,36 @@ class DatePicker {
         date.weekSymbol();
     }
 
-    today() {
+    setToday() {
         selectedYear = currYear;
         selectedMonth = currMonth;
+        let label = selectYear.getElementsByTagName('label');
+        for(let i=0; i<label.length; i++) {
+            let input = label[i].getElementsByTagName('input')[0];
+            let span  = label[i].getElementsByTagName('span')[0];
+            if(input.value == selectedYear) {
+                input.checked = true;
+                selectYearBlock.innerHTML = span.innerText + dropIcon;
+                break;
+            }
+        }
+        
+        label = selectMonth.getElementsByTagName('label');
+        for(let i=0; i<label.length; i++) {
+            let input = label[i].getElementsByTagName('input')[0];
+            let span  = label[i].getElementsByTagName('span')[0];
+            if(input.value == selectedMonth) {
+                input.checked = true;
+                selectMonthBlock.innerHTML = span.innerText + dropIcon;
+                break;
+            }
+        }
         date.dateBox();
-        date.pickedDate();
     }
     
+    pickToday() {
+        this.pickedDate();
+    }
 
     pickedDate() {
         let y = selectedYear;
@@ -324,7 +376,6 @@ class DatePicker {
         let selectedDate = y + '-' + m + '-' + d;
         focusedElement.value = selectedDate;
         document.getElementsByClassName('date-picker')[0].style.display = 'none'
-        
         return selectedDate;
     }
 }
@@ -334,22 +385,26 @@ const date = new DatePicker();
 date.config();
 
 
-
-
-
 const fetchElements = () => {
     var el = document.querySelectorAll('[dp="true"]')
     var dp = document.getElementsByClassName('date-picker')[0]
-    console.log(el)
     for(let i=0; i<el.length; i++) {
         el[i].addEventListener('click', (e) => {
-            focusedElement = el[i]
+            date.setToday();
+            focusedElement = el[i];
             let rect = el[i].getBoundingClientRect();
-            let x = rect.x
+            let x = rect.x;
             let y = rect.y;
-            dp.style.position = 'absolute'
-            dp.style.left     = x + 'px'
-            dp.style.top      = y + el[0].offsetHeight + 'px'
+            let elOffsetHeight = el[0].offsetHeight;
+            let innerHeight    = window.innerHeight;
+            dp.style.position = 'absolute';
+            dp.style.left     = x + 'px';
+            if(y + 400 < innerHeight) {
+                dp.style.top      = y + elOffsetHeight + 10 + window.pageYOffset + 'px'
+            }
+            else {
+                dp.style.top = (y - (dp.offsetHeight + 10) + window.pageYOffset) + 'px'
+            }
             dp.style.display = 'block'
         })
     }
